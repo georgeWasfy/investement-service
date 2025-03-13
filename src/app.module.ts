@@ -9,6 +9,7 @@ import { TransactionModule } from './transaction/transaction.module';
 import { Transaction } from './transaction/model/transaction.model';
 import { PaymentGatewayModule } from './payment-gateway/payment-gateway.module';
 import tokenConfig from 'config/token.config';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -41,6 +42,17 @@ import tokenConfig from 'config/token.config';
         logging: false,
       }),
       inject: [ConfigService],
+    }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        autoLogging: true,
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            colorize: true,
+          },
+        },
+      },
     }),
     UserModule,
     AuthModule,
