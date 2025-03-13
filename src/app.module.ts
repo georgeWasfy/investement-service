@@ -7,6 +7,7 @@ import { UserModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { Transaction } from './transaction/model/transaction.model';
+import { PaymentGatewayModule } from './payment-gateway/payment-gateway.module';
 import tokenConfig from 'config/token.config';
 
 @Module({
@@ -44,6 +45,7 @@ import tokenConfig from 'config/token.config';
     UserModule,
     AuthModule,
     TransactionModule,
+    PaymentGatewayModule,
   ],
   controllers: [],
   providers: [],
