@@ -5,12 +5,15 @@ import { User } from './users/models/user.model';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UserModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { TransactionModule } from './transaction/transaction.module';
+import { Transaction } from './transaction/model/transaction.model';
+import tokenConfig from 'config/token.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig],
+      load: [databaseConfig, tokenConfig],
     }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
@@ -33,13 +36,14 @@ import { AuthModule } from './auth/auth.module';
           },
         },
         database: configService.get('DATABASE.NAME'),
-        models: [User],
+        models: [User, Transaction],
         logging: false,
       }),
       inject: [ConfigService],
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    TransactionModule,
   ],
   controllers: [],
   providers: [],

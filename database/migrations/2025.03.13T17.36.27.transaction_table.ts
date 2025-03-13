@@ -1,31 +1,36 @@
-import { Migration } from '../../umzug';
 import { DataTypes } from 'sequelize';
+import { Migration } from '../../umzug';
 
 export const up: Migration = async ({ context: sequelize }) => {
-  await sequelize.getQueryInterface().createTable('Users', {
+  await sequelize.getQueryInterface().createTable('Transactions', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    username: {
-      type: DataTypes.STRING,
-      unique: true,
+    amount: {
       allowNull: false,
+      type: DataTypes.DECIMAL,
     },
-    email: {
-      type: DataTypes.STRING,
-      unique: true,
+    userId: {
       allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
     },
-    password: {
-      type: DataTypes.STRING,
+    currency: {
       allowNull: false,
-    },
-    hashedRT: {
       type: DataTypes.STRING,
-      allowNull: true,
+    },
+    status: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    metadata: {
+      type: DataTypes.JSON,
     },
     createdAt: {
       allowNull: false,
@@ -38,7 +43,7 @@ export const up: Migration = async ({ context: sequelize }) => {
   });
   // Create the trigger function to update updated_at
   await sequelize.query(`
-    CREATE OR REPLACE FUNCTION users_update_updated_at()
+    CREATE OR REPLACE FUNCTION transactions_update_updated_at()
     RETURNS TRIGGER AS $$
     BEGIN
         NEW.updated_at := CURRENT_TIMESTAMP;
@@ -50,16 +55,16 @@ export const up: Migration = async ({ context: sequelize }) => {
   // Create the trigger that uses the function
   await sequelize.query(`
     CREATE TRIGGER set_updated_at
-    BEFORE UPDATE ON "Users"
-    FOR EACH ROW EXECUTE PROCEDURE users_update_updated_at();
+    BEFORE UPDATE ON "Transactions"
+    FOR EACH ROW EXECUTE PROCEDURE transactions_update_updated_at();
   `);
 };
 
 export const down: Migration = async ({ context: sequelize }) => {
   // Drop the trigger and function first
   await sequelize.query(`
-    DROP TRIGGER IF EXISTS set_updated_at ON "Users";
-    DROP FUNCTION IF EXISTS users_update_updated_at;
+    DROP TRIGGER IF EXISTS set_updated_at ON "Transactions";
+    DROP FUNCTION IF EXISTS transactions_update_updated_at;
   `);
-  await sequelize.getQueryInterface().dropTable('Users');
+  await sequelize.getQueryInterface().dropTable('Transactions');
 };

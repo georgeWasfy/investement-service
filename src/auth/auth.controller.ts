@@ -5,7 +5,9 @@ import { Response } from 'express';
 import { Public } from './decorator/public.decorator';
 import { GetCurrentUser } from './decorator/current-user.decorator';
 import { SignInDto, SignUpDto, TokensDto } from './dto/auth.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller({ version: '1', path: 'auth' })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

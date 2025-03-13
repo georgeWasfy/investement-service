@@ -7,9 +7,7 @@ import {
   Model,
 } from 'sequelize-typescript';
 
-@Table({ timestamps: true, tableName: 'users' })
-
-
+@Table({ timestamps: true, tableName: 'Users' })
 export class User extends Model {
   @Column({
     type: DataType.INTEGER,
@@ -32,8 +30,8 @@ export class User extends Model {
   hashedRT: string;
 
   @CreatedAt
-  created_at: Date;
+  createdAt: Date;
 
   @UpdatedAt
-  updated_at: Date;
+  updatedAt: Date;
 }

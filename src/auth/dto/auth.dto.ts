@@ -15,7 +15,7 @@ export class SignInDto {
 export class SignUpDto {
   @ApiProperty({ example: 'John Doe', description: 'Name' })
   @IsString()
-  name: string;
+  username: string;
 
   @ApiProperty({ example: 'john@example.com', description: 'Email' })
   @IsEmail({}, { message: 'This is not a valid email.' })
