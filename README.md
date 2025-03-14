@@ -1,73 +1,153 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Investement-Module
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### User
+* Exposed Endpoints:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  * [GET] /api/v1/user/{userId}/transactions
+  <code>**description**: Get transactions for a single user</code>
 
-## Description
+    **response**
+      ```json
+        {
+          "data": {
+            "transactions": [
+              {
+                "id": 36,
+                "amount": "11400",
+                "userId": 9,
+                "currency": "USD",
+                "status": "success",
+                "metadata": {
+                  "originalAmount": 10000,
+                  "originalCurrency": "EUR",
+                  "exchangeRateDate": "2025-03-14T13:55:11.271Z"
+                },
+                "createdAt": "2025-03-14T13:55:11.280Z",
+                "updatedAt": "2025-03-14T13:55:11.280Z"
+              }
+            ]
+          }
+       }
+      ```
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Transactions
+* Exposed Endpoints:
 
-## Installation
+  * [POST] /api/v1/transactions
+  <code>**description**: Create a single investement transaction</code>
 
-```bash
-$ npm install
+    **body**
+      ```json
+        {
+          "amount": "10000",
+          "currency": "EUR",
+       }
+      ```
+
+      **Response**
+      ```json
+        {
+          "data": {
+              "id": 41,
+              "amount": "100.5",
+              "userId": 9,
+              "currency": "USD",
+              "status": "success",
+              "metadata": {
+                "originalAmount": 100.5,
+                "originalCurrency": "USD",
+                "exchangeRateDate": "2025-03-14T16:06:11.734Z"
+              },
+              "createdAt": "2025-03-14T16:06:11.735Z",
+              "updatedAt": "2025-03-14T16:06:11.735Z"
+           }
+        }
+      ```
+
+
+### Auth
+* Exposed Endpoints:
+
+  * [POST] /api/v1/auth/local/signup
+  <code>**description**:  create a user and obtain access and refresh tokens</code>
+   **body**
+    ```json
+      {
+          "name": "test",
+          "email": "test@gmail.com",
+          "password": "123456"
+      }
+    ```
+    **response**
+      ```json
+        {
+            "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsImlhdCI6MTcyMzE5Nzk2MSwiZXhwIjoxNzIzMjAxNTYxfQ.ADRBHxQsMPzz1E4ghfgc4LoUpLkEsy8AkeO1oOmsDAE"
+        }
+      ```
+
+  * [POST] /api/v1/auth/local/signin
+    <code>**description**:  sign in user and obtain access and refresh token</code>
+    **body**
+    ```json
+    {
+        "email": "test@gmail.com",
+        "password": "123456"
+    }
+    ```
+
+    **response**
+      ```json
+        {
+                "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsImlhdCI6MTcyMzE5ODUwNiwiZXhwIjoxNzIzMjAyMTA2fQ.OYCX9fH9Sfp3bfBhpNJnD_d8O150Sxs2Q5GifnvzkY8",
+        }
+      ```
+
+  * [POST] /api/v1/auth/local/refresh
+  <code>**description**:  obtain new access token </code>
+   **body**
+    ```json
+      {}
+    ```
+    **response**
+      ```json
+        {
+            "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsImlhdCI6MTcyMzE5Nzk2MSwiZXhwIjoxNzIzMjAxNTYxfQ.ADRBHxQsMPzz1E4ghfgc4LoUpLkEsy8AkeO1oOmsDAE"
+        }
+      ```
+
+```yaml
+> All endpoints are authenticated except signin&signup and should have bearer token header obtained from signin or signup endpoints
 ```
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+### How to run locally
+```yaml
+> create a .env file using .env.example as reference.
+> create a database locally on your machine with same name as provided in .env file (postgres).
+> npm install
+> npm run start
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+### How to run using docker
+```yaml
+> create a .env file using .env.example as reference.
+> docker compose up
 ```
 
-## Support
+# API Documentation and Testing
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+To test the API endpoints, you can use the Swagger documentation available at:  
+[http://localhost:3000/docs](http://localhost:3000/docs)
 
-## Stay in touch
+## Steps to Test Endpoints
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+1. **Open Swagger UI**: Navigate to the above link in your web browser.
+   
+2. **Explore Endpoints**: Browse through the available endpoints listed in the Swagger UI.
+   
+3. **Try It Out**: Click on an endpoint to view its details, then click the "Try it out" button to test it.
+   
+4. **Enter Parameters**: Fill in any required parameters (e.g., headers, body) as specified in the endpoint documentation.
+   
+5. **Execute Request**: Click the "Execute" button to send the request.
+   
+6. **View Response**: The response will be displayed below, including the status code and response body.
