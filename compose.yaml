@@ -1,0 +1,43 @@
+version: "3.5"
+services:
+  backend:
+    build: .
+    container_name: project_be
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+        - DB_NAME=${DB_NAME}
+        - DB_HOST_READ=${DOCKER_DB_HOST_READ}
+        - DB_HOST_WRITE=${DOCKER_DB_HOST_WRITE}
+        - DB_PORT=${DB_PORT}
+        - DB_USER=${DB_USER}
+        - DB_PASS=${DB_PASS}
+        - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+        - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+        - ACCESS_TOKEN_EXPIRY=${ACCESS_TOKEN_EXPIRY}
+        - REFRESH_TOKEN_EXPIRY=${REFRESH_TOKEN_EXPIRY}
+  postgres:
+    image: postgres:latest
+    container_name: investement_db
+    hostname: investement_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ${DB_NAME}"]
+      interval: 10s                    # Check every 10 seconds
+      timeout: 5s                       # Timeout after 5 seconds
+      retries: 5                        # Retry 5 times before marking as 
+
+volumes:
+  postgres_data:
+
