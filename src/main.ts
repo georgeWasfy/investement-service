@@ -1,9 +1,10 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger } from 'nestjs-pino';
 import { HttpExceptionFilter } from './filters/exceptions.filter';
+import { AcessTokenGuard } from './guards/access-token-protected-guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -13,6 +14,8 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter(app.get(Logger)));
   app.setGlobalPrefix('api');
   app.enableVersioning({ type: VersioningType.URI });
+  const reflector = new Reflector();
+  app.useGlobalGuards(new AcessTokenGuard(reflector));
   const config = new DocumentBuilder()
     .setTitle('Investement Service')
     .setDescription('Investement API description')

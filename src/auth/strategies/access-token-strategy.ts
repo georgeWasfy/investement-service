@@ -4,9 +4,11 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { env } from 'utils/env';
 
 type jwtPayload = {
-  sub: string;
+  sub: number;
   email: string;
-}
+  iat: number;
+  exp: number;
+};
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor() {

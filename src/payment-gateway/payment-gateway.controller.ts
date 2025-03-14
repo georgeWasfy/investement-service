@@ -1,7 +1,10 @@
 import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { PaymentGatewayService } from './payment-gateway.service';
+import { ApiTags } from '@nestjs/swagger';
+import { Public } from '@base/auth/decorator/public.decorator';
 
 @Controller('payments')
+@ApiTags('Mock Payment Gateway')
 export class PaymentGatewayController {
   private paymentIdCounter = 0;
   private failureCount = 0;
@@ -9,6 +12,7 @@ export class PaymentGatewayController {
   constructor(private readonly paymentGatewayService: PaymentGatewayService) {}
 
   @Post()
+  @Public()
   async createPayment(
     @Body() paymentData: any,
   ): Promise<{ id: number; status: string }> {
@@ -22,6 +26,7 @@ export class PaymentGatewayController {
   }
 
   @Get(':id')
+  @Public()
   async getPaymentStatus(@Param('id') id: number): Promise<{ status: string }> {
     // Simulate payment status check
     const status = await this.paymentGatewayService.checkPaymentStatus(id);
