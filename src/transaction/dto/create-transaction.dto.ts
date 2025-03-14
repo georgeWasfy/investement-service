@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsJSON, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsInt, IsJSON, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import { Currency, CurrencyEnum } from '../types';
 
 export class CreateTransactionDTO {
   @IsNumber()
@@ -16,12 +17,12 @@ export class CreateTransactionDTO {
   })
   userId: number;
 
-  @IsString()
+  @IsEnum(CurrencyEnum)
   @ApiProperty({
     example: 'USD',
     description: 'The currency of the transaction (e.g., USD, EUR)',
   })
-  currency: string;
+  currency: Currency;
 
   @IsString()
   @ApiProperty({
