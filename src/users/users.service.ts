@@ -1,19 +1,16 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from './models/user.model';
-import { SignUpDto } from '@base/auth/dto/auth.dto';
+import { CreateUser } from './types';
 
 @Injectable()
 export class UsersService {
-  async create(
-    createUserDto: SignUpDto,
-  ): Promise<{ data: { user: User } }> {
+  async create(userData: CreateUser): Promise<{ data: { user: User } }> {
     try {
-      const user = await User.create(createUserDto as any);
+      const user = await User.create(userData);
       return {
         data: { user },
       };
     } catch (error) {
-      console.log("🚀 ~ UsersService ~ error:", error)
       throw new BadRequestException('Cant Create a User');
     }
   }

@@ -1,3 +1,4 @@
+import { Status } from '@base/transaction/types';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -7,7 +8,7 @@ export class PaymentGatewayService {
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
-  async checkPaymentStatus(paymentId: number): Promise<string> {
+  async checkPaymentStatus(paymentId: number): Promise<Status> {
     // Simulate one success every two failures
     const successEveryTwoFailures = Math.random() < 1 / 3;
 
