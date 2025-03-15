@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger } from 'nestjs-pino';
 import { HttpExceptionFilter } from './filters/exceptions.filter';
 import { AcessTokenGuard } from './guards/access-token-protected-guard';
-
+import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
@@ -14,6 +14,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter(app.get(Logger)));
   app.setGlobalPrefix('api');
   app.enableVersioning({ type: VersioningType.URI });
+  app.use(cookieParser());
   const reflector = new Reflector();
   app.useGlobalGuards(new AcessTokenGuard(reflector));
   const config = new DocumentBuilder()

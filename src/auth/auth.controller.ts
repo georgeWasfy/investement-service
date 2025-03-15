@@ -19,7 +19,7 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ): Promise<Partial<TokensDto>> {
     const tokens = await this.authService.localSignUp(signupDto);
-    response.cookie('refresh-token', tokens.refresh_token, { httpOnly: true });
+    response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true });
     return { access_token: tokens.access_token };
   }
 
@@ -42,7 +42,7 @@ export class AuthController {
     };
   }
 
-  @Post('/local/logout')
+  // @Post('/local/logout')
   localLogOut(@GetCurrentUser('sub') userId: string) {
     return this.authService.localLogOut(userId);
   }
@@ -56,7 +56,7 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ): Promise<Partial<TokensDto>> {
     const tokens = await this.authService.refreshTokens(userId, refreshToken);
-    response.cookie('refresh-token', tokens.refresh_token, { httpOnly: true });
+    response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true });
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Credentials', 'true');
     return { access_token: tokens.access_token };

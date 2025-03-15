@@ -1,5 +1,5 @@
 import { registerAs } from '@nestjs/config';
-import { env } from '../utils/env';
+import { env } from '../src/utils/env';
 
 type Connection = {
   driver: 'postgres';

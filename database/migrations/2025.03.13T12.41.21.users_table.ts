@@ -41,7 +41,7 @@ export const up: Migration = async ({ context: sequelize }) => {
     CREATE OR REPLACE FUNCTION users_update_updated_at()
     RETURNS TRIGGER AS $$
     BEGIN
-        NEW.updated_at := CURRENT_TIMESTAMP;
+        NEW."updatedAt" := CURRENT_TIMESTAMP;
         RETURN NEW;
     END;
     $$ LANGUAGE plpgsql;

@@ -51,7 +51,7 @@ export class AuthService {
     const hash = await this.hashPassword(rt);
     const updatedUser = await User.update(
       {
-        hashedRt: hash,
+        hashedRT: hash,
       },
       { where: { id: userId } },
     );
