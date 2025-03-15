@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from './models/user.model';
 import { CreateUser } from './types';
+import { TransactionResource } from '@base/transaction/resources/transaction.resource';
+import { TransactionType } from '@base/transaction/types';
 import { Transaction } from '@base/transaction/model/transaction.model';
 
 @Injectable()
@@ -16,13 +18,11 @@ export class UsersService {
     }
   }
 
-  async getUserTransactions(
-    userId: number,
-  ): Promise<{ data: { transactions: Transaction[] } }> {
+  async getUserTransactions(userId: number) {
     try {
-      const transactions = await Transaction.findAll({ where: { userId } });
+      const trs = await Transaction.findAll({ where: { userId } });
       return {
-        data: { transactions },
+        data: { transactions: new TransactionResource().toDTOs(trs) },
       };
     } catch (error) {
       throw new BadRequestException('Cant get User transactions');

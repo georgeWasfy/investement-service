@@ -9,6 +9,7 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
+import { Currency, Status } from '../types';
 
 @Table({ timestamps: true, tableName: 'Transactions' })
 export class Transaction extends Model {
@@ -28,10 +29,10 @@ export class Transaction extends Model {
   userId: number;
 
   @Column(DataType.STRING)
-  currency: string;
+  currency: Currency;
 
   @Column(DataType.STRING)
-  status: string;
+  status: Status;
 
   @Column(DataType.JSON)
   metadata: object;

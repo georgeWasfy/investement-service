@@ -5,6 +5,7 @@ import Decimal from 'decimal.js';
 import { Currency } from './types';
 import { PaymentService } from '@base/payment/payment.service';
 import { PinoLogger } from 'nestjs-pino';
+import { TransactionResource } from './resources/transaction.resource';
 
 @Injectable()
 export class TransactionService {
@@ -52,7 +53,7 @@ export class TransactionService {
       };
       const tr = await Transaction.create(transaction_data);
 
-      return { data: { transaction: tr } };
+      return { data: { transaction: new TransactionResource().toDTO(tr) } };
     } catch (error) {
       throw new BadRequestException('Unable to create transaction');
     }
